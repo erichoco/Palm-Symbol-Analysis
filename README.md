@@ -1,3 +1,7 @@
+[Update-08-10]
+Add 08/05 user study data: 2D csv of user1 - user3. Change filenames in `main.js` to draw on canvas. 
+
+
 Palm-Symbol-Analysis
 ====================
 
