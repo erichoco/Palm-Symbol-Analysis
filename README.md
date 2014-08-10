@@ -1,4 +1,5 @@
-[Update-08-10]
+###### [Update-08-10]
+
 Add 08/05 user study data: 2D csv of user1 - user3. Change filenames in `main.js` to draw on canvas. 
 
 
@@ -12,10 +13,10 @@ WristEye project. Display user drawn symbols on palm. Compare similarity of alig
 Setup
 =====
 
-Clone
+* Clone
 
-`npm install`
+* `npm install`
 
-`node ./bin/www`
+* `node ./bin/www`
 
-localhost:3000
+* localhost:3000
