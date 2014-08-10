@@ -154,8 +154,9 @@ function drawSymbol(dataset) {
 
 function drawDiff(dataset) {
     var sample = svg.selectAll('.sample')
-            .data(dataset)
-        .enter().append('g')
+            .data(dataset);
+
+    sample.enter().append('g')
             .attr('class', 'sample');
 
     sample.selectAll('.sample-dot')
@@ -170,4 +171,6 @@ function drawDiff(dataset) {
     sample.append('path')
             .attr('d', diffLine)
             .style('stroke', '#760000');
+
+    sample.exit().remove();
 }

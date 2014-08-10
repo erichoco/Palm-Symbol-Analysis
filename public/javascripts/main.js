@@ -1,22 +1,39 @@
 (function() {
     var symbols = [];
-    var filename0 = "tri-0.csv";
-    var filename1 = "tri-1.csv";
+    // var filename0 = "tri-0.csv";
+    // var filename1 = "tri-1.csv";
+    var filepath = "../data/"
+    var filename0 = "shape/0-0.csv";
+    var filename1 = "shape/0-1.csv";
 
-    $('#diff-btn').on('click', function(evt) {
-        console.log('calculate diff...');
-        var sampleSize = 64;
-        calculateDiff(sampleSize);
+    $('#diff-box').on('click', function(evt) {
+        if ($(this).is(':checked')) {
+            console.log('calculate diff...');
+            var sampleSize = 64;
+            calculateDiff(sampleSize);
+        }
+        else {
+            console.log('cleaning diff...');
+            clearDiff();
+        }
     })
 
-    loadNewData(filename0);
-    loadNewData(filename1);
+    // loadNewData(filepath, filename0);
+    // loadNewData(filepath, "letter/1-0.csv");
+    for (var i = 0; i < 10; i++) {
+        // loadNewData(filepath, "letter/" + i + "-0.csv");
+        // loadNewData(filepath, "shape/user3-4-" + i + ".csv");
+        loadNewData(filepath, "stroke/user2-" + i + "-0.csv");
+    };
 
-    function loadNewData(filename) {
+    function loadNewData(filepath, filename) {
         var newData = {
             "trial": filename,
         };
-        d3.csv("../data/" + filename, function(error, data) {
+        d3.csv(filepath + filename, function(error, data) {
+            if (0 === data.length) {
+                return;
+            }
             newData["coord"] = [];
             data.forEach(function(d) {
                 // change string (from CSV) into number format
@@ -58,6 +75,10 @@
 
         console.log("Avg err =", err/sampleSize);
         drawDiff(sample);
+    }
+
+    function clearDiff() {
+        drawDiff([]);
     }
 
 })();
