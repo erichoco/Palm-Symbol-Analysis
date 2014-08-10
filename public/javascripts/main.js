@@ -1,10 +1,16 @@
 (function() {
     var symbols = [];
-    // var filename0 = "tri-0.csv";
-    // var filename1 = "tri-1.csv";
-    var filepath = "../data/"
-    var filename0 = "shape/0-0.csv";
-    var filename1 = "shape/0-1.csv";
+    var filepath = "../data/";
+    // var filename0 = "shape/0-0.csv";
+    // var filename1 = "shape/0-1.csv";
+
+    // loadNewData(filepath, filename0);
+    // loadNewData(filepath, "letter/1-0.csv");
+    for (var i = 0; i < 5; i++) {
+        // loadNewData(filepath, "letter/" + i + "-0.csv");
+        // loadNewData(filepath, "shape/user3-4-" + i + ".csv");
+        loadNewData(filepath, "stroke/user3-" + i + "-0.csv");
+    };
 
     $('#diff-box').on('click', function(evt) {
         if ($(this).is(':checked')) {
@@ -16,15 +22,7 @@
             console.log('cleaning diff...');
             clearDiff();
         }
-    })
-
-    // loadNewData(filepath, filename0);
-    // loadNewData(filepath, "letter/1-0.csv");
-    for (var i = 0; i < 10; i++) {
-        // loadNewData(filepath, "letter/" + i + "-0.csv");
-        // loadNewData(filepath, "shape/user3-4-" + i + ".csv");
-        loadNewData(filepath, "stroke/user2-" + i + "-0.csv");
-    };
+    });
 
     function loadNewData(filepath, filename) {
         var newData = {
