@@ -1,16 +1,19 @@
+var symbols = [];
+
 (function() {
-    var symbols = [];
     var filepath = "../data/";
     // var filename0 = "shape/0-0.csv";
     // var filename1 = "shape/0-1.csv";
 
     // loadNewData(filepath, filename0);
     // loadNewData(filepath, "letter/1-0.csv");
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 2; i++) {
         // loadNewData(filepath, "letter/" + i + "-0.csv");
         // loadNewData(filepath, "shape/user3-4-" + i + ".csv");
-        loadNewData(filepath, "stroke/user3-" + i + "-0.csv");
+        // loadNewData(filepath, "stroke/user3-" + i + "-0.csv");
+        loadNewData(filepath, "tri-" + i + ".csv");
     };
+
 
     $('#diff-box').on('click', function(evt) {
         if ($(this).is(':checked')) {
