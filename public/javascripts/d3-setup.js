@@ -77,6 +77,10 @@ svg.append("g")
 svg.selectAll("g.tick line")
     .style("stroke", "lightgrey");
 
+var selectShapeVert = false;
+var selectedVertData = undefined;
+var vertDist = 0;
+
 function drawSymbol(dataset) {
 
     // don't want dots overlapping axis, so add in buffer to data domain
@@ -146,30 +150,83 @@ function drawSymbol(dataset) {
                 tooltip.html("(" + xValue(d) + ", " + yValue(d) + ")")
                      .style("left", (d3.event.pageX + 5) + "px")
                      .style("top", (d3.event.pageY - 28) + "px");
-                d3.select(this).transition().attr("r", 5);
+                d3.select(this).transition().attr("r", 7);
             })
             .on("mouseout", function(d) {
                 tooltip.transition()
                      .duration(500)
                      .style("opacity", 0);
-                 d3.select(this).transition().attr("r", 3.5);
+                var self = d3.select(this);
+                if (!self.classed("clicked")) {
+                    d3.select(this).transition().attr("r", 3.5);
+                }
             })
             .on("click", function(d, i, j) {
-                console.log(j);
-                d3.select(this).attr("r", 7);
-                var parent = d3.select(this)[0][0].parentNode;
-                // var set = parent.__data__;
-                var set = dataset[j];
-                var setLen = set.coord.length;
-                if (0.5 > i/setLen) {
-                    set.coord = set.coord.slice(i, setLen);
-                }
-                else {
-                    set.coord = set.coord.slice(0, i);
-                }
+                if (selectShapeVert) {
+                    var self = d3.select(this);
+                        self.classed("clicked", true);
 
-                symbols[j] = dataset[j] = set;
-                drawSymbol(dataset);
+                    var parent = d3.select(this.parentNode);
+                    parent.append("circle")
+                        .attr("class", "shape-vert")
+                        .attr("r", 3)
+                        .attr("cx", xMap(d))
+                        .attr("cy", yMap(d))
+                        .style('fill', '#760000');
+
+                    // one vertex is already selected
+                    if (selectedVertData) {
+                        var lineDist = (Math.sqrt(
+                            Math.pow((d.x - selectedVertData.x),2)+
+                            Math.pow((d.y - selectedVertData.y),2)));
+                        vertDist += lineDist;
+                        console.log(vertDist);
+                        var line = parent.append("line")
+                            .attr("class", "shape-vert")
+                            .attr("x1", xMap(d))
+                            .attr("y1", yMap(d))
+                            .attr("x2", xMap(selectedVertData))
+                            .attr("y2", yMap(selectedVertData))
+                            .style("stroke", "#760000")
+                            .style("stroke-width", "3px")
+                            .on("mouseover", function() {
+                                tooltip.transition()
+                                    .duration(200)
+                                    .style("opacity", .9);
+                                tooltip.html(lineDist.toFixed(2) + "mm")
+                                    .style("left", (d3.event.pageX + 5) + "px")
+                                    .style("top", (d3.event.pageY - 28) + "px");
+                            })
+                            .on("mouseout", function() {
+                                tooltip.transition()
+                                    .duration(200)
+                                    .style("opacity", 0);
+                            });
+
+                        selectedVertData = undefined;
+                    }
+                    // select now vertex
+                    else {
+                        selectedVertData = d;
+                    }
+
+
+                }
+                // console.log(j);
+                // d3.select(this).attr("r", 7);
+                // var parent = d3.select(this)[0][0].parentNode;
+                // // var set = parent.__data__;
+                // var set = dataset[j];
+                // var setLen = set.coord.length;
+                // if (0.5 > i/setLen) {
+                //     set.coord = set.coord.slice(i, setLen);
+                // }
+                // else {
+                //     set.coord = set.coord.slice(0, i);
+                // }
+
+                // symbols[j] = dataset[j] = set;
+                // drawSymbol(dataset);
             });
 
     dots.exit().remove();
@@ -202,4 +259,12 @@ function drawDiff(dataset) {
             .style('stroke', '#760000');
 
     sample.exit().remove();
+}
+
+function clearVert() {
+    var symbol = svg.selectAll('.symbol');
+    symbol.selectAll('.shape-vert').remove();
+    symbol.selectAll('.clicked').transition()
+        .attr('r', 3.5)
+        .classed('clicked', false);
 }

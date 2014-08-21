@@ -1,19 +1,19 @@
 var symbols = [];
 
-(function() {
+$(function() {
     var filepath = "../data/";
     // var filename0 = "shape/0-0.csv";
     // var filename1 = "shape/0-1.csv";
 
     // loadNewData(filepath, filename0);
     // loadNewData(filepath, "letter/1-0.csv");
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 5; i++) {
         // loadNewData(filepath, "letter/" + i + "-0.csv");
         // loadNewData(filepath, "shape/user3-4-" + i + ".csv");
         // loadNewData(filepath, "stroke/user3-" + i + "-0.csv");
-        loadNewData(filepath, "tri-" + i + ".csv");
+        // loadNewData(filepath, "tri-" + i + ".csv");
+        loadNewData(filepath, '0813/'+i+'-0.csv');
     };
-
 
     $('#diff-box').on('click', function(evt) {
         if ($(this).is(':checked')) {
@@ -26,6 +26,22 @@ var symbols = [];
             clearDiff();
         }
     });
+    $('#shape-btn').on('click', function(evt) {
+        selectShapeVert = true;
+        var $this = $(this);
+        $('#shape-done-btn').attr('disabled', false);
+        $this.attr('disabled', true);
+        $this.parent().children('span').html('');
+        clearVert();
+    })
+    $('#shape-done-btn').on('click', function(evt) {
+        selectShapeVert = false;
+        var $this = $(this);
+        $('#shape-btn').attr('disabled', false);
+        $this.attr('disabled', true);
+        $this.parent().children('span')
+            .html('Shape difference: ' + vertDist.toFixed(3) + 'mm');
+    })
 
     function loadNewData(filepath, filename) {
         var newData = {
@@ -82,5 +98,5 @@ var symbols = [];
         drawDiff([]);
     }
 
-})();
+});
 
