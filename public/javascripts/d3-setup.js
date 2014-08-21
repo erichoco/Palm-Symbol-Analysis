@@ -84,6 +84,8 @@ function drawSymbol(dataset) {
     // yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
     xScale.domain([scaleMin-10, scaleMax+10]);
     yScale.domain([scaleMin-10, scaleMax+10]);
+    // xScale.domain([0, 100]);
+    // yScale.domain([0, 100]);
 
     // x-axis
     svg.select(".x.axis").transition().call(xAxis);
@@ -120,15 +122,19 @@ function drawSymbol(dataset) {
 
     // draw dots
     var symbol = svg.selectAll(".symbol")
-            .data(dataset)
-        .enter().append("g")
-            .attr("class", "symbol");
+            .data(dataset);
 
-    symbol.selectAll(".dot")
+    symbol.enter().append("g")
+            .attr("class", "symbol");
+    symbol.exit().remove();
+
+
+    var dots = symbol.selectAll(".dot")
             .data(function(d) {
                 return d.coord;
-            })
-        .enter().append("circle")
+            });
+
+    dots.enter().append("circle")
             .attr("class", "dot")
             .attr("r", 3.5)
             .attr("cx", xMap)
@@ -140,12 +146,35 @@ function drawSymbol(dataset) {
                 tooltip.html("(" + xValue(d) + ", " + yValue(d) + ")")
                      .style("left", (d3.event.pageX + 5) + "px")
                      .style("top", (d3.event.pageY - 28) + "px");
+                d3.select(this).transition().attr("r", 5);
             })
             .on("mouseout", function(d) {
                 tooltip.transition()
                      .duration(500)
                      .style("opacity", 0);
+                 d3.select(this).transition().attr("r", 3.5);
+            })
+            .on("click", function(d, i, j) {
+                console.log(j);
+                d3.select(this).attr("r", 7);
+                var parent = d3.select(this)[0][0].parentNode;
+                // var set = parent.__data__;
+                var set = dataset[j];
+                var setLen = set.coord.length;
+                if (0.5 > i/setLen) {
+                    set.coord = set.coord.slice(i, setLen);
+                }
+                else {
+                    set.coord = set.coord.slice(0, i);
+                }
+
+                symbols[j] = dataset[j] = set;
+                drawSymbol(dataset);
             });
+
+    dots.exit().remove();
+    dots.attr("cx", xMap).attr("cy", yMap);
+
     symbol.each(function(d, i) {
         d3.select(this).selectAll(".dot")
             .style("fill", function() { return color(i);});
