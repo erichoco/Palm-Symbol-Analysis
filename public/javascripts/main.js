@@ -7,12 +7,12 @@ $(function() {
 
     // loadNewData(filepath, filename0);
     // loadNewData(filepath, "letter/1-0.csv");
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 2; i++) {
         // loadNewData(filepath, "letter/" + i + "-0.csv");
         // loadNewData(filepath, "shape/user3-4-" + i + ".csv");
         // loadNewData(filepath, "stroke/user3-" + i + "-0.csv");
-        // loadNewData(filepath, "tri-" + i + ".csv");
-        loadNewData(filepath, '0813/'+i+'-0.csv');
+        loadNewData(filepath, "tri-" + i + ".csv");
+        // loadNewData(filepath, '0813/'+i+'-0.csv');
     };
 
     $('#diff-box').on('click', function(evt) {
@@ -26,6 +26,7 @@ $(function() {
             clearDiff();
         }
     });
+
     $('#shape-btn').on('click', function(evt) {
         selectShapeVert = true;
         var $this = $(this);
@@ -33,7 +34,8 @@ $(function() {
         $this.attr('disabled', true);
         $this.parent().children('span').html('');
         clearVert();
-    })
+    });
+
     $('#shape-done-btn').on('click', function(evt) {
         selectShapeVert = false;
         var $this = $(this);
@@ -41,7 +43,21 @@ $(function() {
         $this.attr('disabled', true);
         $this.parent().children('span')
             .html('Shape difference: ' + vertDist.toFixed(3) + 'mm');
-    })
+    });
+
+    $('#area-btn').on('click', function() {
+        var polyArea = calArea();
+        var $this = $(this);
+        $this.parent().children('span').html(function() {
+            var str = '';
+            for (var i = 0, len = symbols.length; i < len; i++) {
+                str +=
+                    (symbols[i].trial + ': ' +
+                     Math.abs(polyArea[i]).toFixed(3) + 'mm<sup>2</sup>  ');
+            };
+            return str;
+        });
+    });
 
     function loadNewData(filepath, filename) {
         var newData = {
