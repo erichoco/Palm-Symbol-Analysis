@@ -267,4 +267,21 @@ function clearVert() {
     symbol.selectAll('.clicked').transition()
         .attr('r', 3.5)
         .classed('clicked', false);
+    vertDist = 0;
+}
+
+function calArea() {
+    var polygons = [];
+    var polyArea = [];
+    for (var i = 0, len = symbols.length; i < len; i++) {
+        var vertices = [];
+        for (var j = 0, len2 = symbols[i].coord.length; j < len2; j++) {
+            vertices.push([symbols[i].coord[j].x, symbols[i].coord[j].y]);
+        }
+
+        var poly = d3.geom.polygon(vertices);
+        polygons.push(poly);
+        polyArea.push(poly.area());
+    }
+    return polyArea;
 }
