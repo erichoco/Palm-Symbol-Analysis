@@ -12,7 +12,7 @@ $(function() {
         // loadNewData(filepath, "shape/user3-4-" + i + ".csv");
         // loadNewData(filepath, "stroke/user3-" + i + "-0.csv");
         // loadNewData(filepath, "tri-" + i + ".csv");
-        loadNewData(filepath, '0813/temp2-2/2-'+i+'.csv');
+        loadNewData(filepath, '0813/temp2/2-'+i+'.csv');
     };
 
     $('#diff-box').on('click', function(evt) {
