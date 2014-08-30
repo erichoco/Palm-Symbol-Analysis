@@ -102,27 +102,33 @@ function drawSymbol(dataset) {
 
     // draw legend
     var legend = svg.selectAll(".legend")
-            .data(dataset)
-        .enter().append("g")
+            .data(dataset);
+
+    legend.enter().append("g")
             .attr("class", "legend")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; })
+            .call(function(selection) {
+                // draw legend colored rectangles
+                selection.append("rect")
+                    .attr("x", width - 18)
+                    .attr("width", 18)
+                    .attr("height", 18)
+                    .style("fill", function(d, i) {
+                        return color(i);
+                    });
+                // draw legend text
+                selection.append("text")
+                    .attr("x", width - 24)
+                    .attr("y", 9)
+                    .attr("dy", ".35em")
+                    .style("text-anchor", "end")
+                    .text(function(d) { return d.trial;});
+            });
 
-    // draw legend colored rectangles
-    legend.append("rect")
-        .attr("x", width - 18)
-        .attr("width", 18)
-        .attr("height", 18)
-        .style("fill", function(d, i) {
-            return color(i);
-        });
-
-    // draw legend text
-    legend.append("text")
-        .attr("x", width - 24)
-        .attr("y", 9)
-        .attr("dy", ".35em")
-        .style("text-anchor", "end")
+    legend.exit().remove();
+    legend.select("text")
         .text(function(d) { return d.trial;});
+
 
     // draw dots
     var symbol = svg.selectAll(".symbol")
@@ -209,24 +215,7 @@ function drawSymbol(dataset) {
                     else {
                         selectedVertData = d;
                     }
-
-
                 }
-                // console.log(j);
-                // d3.select(this).attr("r", 7);
-                // var parent = d3.select(this)[0][0].parentNode;
-                // // var set = parent.__data__;
-                // var set = dataset[j];
-                // var setLen = set.coord.length;
-                // if (0.5 > i/setLen) {
-                //     set.coord = set.coord.slice(i, setLen);
-                // }
-                // else {
-                //     set.coord = set.coord.slice(0, i);
-                // }
-
-                // symbols[j] = dataset[j] = set;
-                // drawSymbol(dataset);
             });
 
     dots.exit().remove();
