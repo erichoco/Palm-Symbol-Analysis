@@ -30,51 +30,101 @@
 </head>
 
 <body>
-    <header>
-        <h1>Palm Symbol Analysis</h1>
-    </header>
     <div class="container">
+        <header>
+            <h1>Palm Symbol Analysis <small>EyeWrist</small></h1>
+        </header>
         <div class="content">
             <h3>Description</h3>
             <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, porro? Necessitatibus dolor officia, fugiat obcaecati accusamus laborum sed aspernatur, sunt quam eligendi, molestiae facilis? Nostrum accusantium, dolor consectetur excepturi expedita!</div>
         </div>
         <div class="content">
             <h3>Symbols</h3>
-            <div>
-                <ul>
-                    <li>Shape</br>
-                        <div>
-                            <h5>Method 1</h5>
-                            <button type="button" id="shape-btn">Select New Vertices</button>
-                            <button type="button" id="shape-done-btn" disabled="disabled">Done</button>
-                            <span></span>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="step-div">
+                            <h4>Step 1<span>&nbsp;&nbsp;Load User Data</span></h4>
+                            <div>
+                                <select>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <h5>Method 2</h5>
-                            <button type="button" id="area-btn">Calculate Area</button>
-                            <span></span>
+                        <hr>
+                        <div class="step-div">
+                            <h4>Step 2<span>&nbsp;&nbsp;Trim / Export</span></h4>
+                            <div>
+                                <p>
+                                    <button type="button" class="trim-btn btn btn-default">Trim Head</button>
+                                    <button type="button" class="trim-btn btn btn-default">Trim Tail</button>
+                                    <button type="button" class="trim-btn btn btn-default">Trim Body</button>
+                                    <span></span>
+                                </p>
+                                <p>
+                                    <button type="button" class="btn btn-success">Done</button>
+                                    <button type="button" class="btn btn-info">Export CSV</button>
+                                    <button type="button" class="btn btn-warning">Reset</button>
+                                </p>
+                            </div>
                         </div>
-                    </li>
-                    <li>Unistroke
-                    </li>
-                    <li>Multi-stroke
-                    </li>
+                        <hr>
+                        <div class="step-div">
+                            <h4>Step 3<span>&nbsp;&nbsp;Analyze</span></h4>
+                            <div>
+                                <ul>
+                                    <li><h5><strong>Shape</strong></h5>
+                                        <div>
+                                            <h5>Vertices Analysis</h5>
+                                            <button type="button" id="shape-btn" class="btn btn-default">Select New Vertices</button>
+                                            <button type="button" id="shape-done-btn" class="btn btn-success" disabled="disabled">Done</button>
+                                            <span></span>
+                                        </div>
+                                        <div>
+                                            <h5>Area Analysis</h5>
+                                            <button type="button" id="area-btn" class="btn btn-default">Calculate Area</button>
+                                            <span></span>
+                                        </div>
+                                    </li>
+                                    <li><h5><strong>Letter</strong></h5>
+                                    </li>
+                                    <li><h5><strong>Multi-stroke</strong></h5>
+                                        <div>
+                                            <h5>Vertices Analysis</h5>
+                                            <button type="button" id="multi-btn" class="btn btn-default">Select New Vertices</button>
+                                            <button type="button" id="multi-done-btn" class="btn btn-success" disabled="disabled">Done</button>
+                                            <span></span>
+                                        </div>
+                                    </li>
 
-                </ul>
+                                </ul>
 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div>
+                            <!-- <span>This is canvas panel</span> -->
+                            <label id="diff-lbl">
+                                <input type="checkbox" name="diff-box" value="diff" id="diff-box">diff
+                            </label>
+                            <div>
+                            <div id="chart"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="content">
-            <!-- <h3>Canvas</h3> -->
+        <!-- <div class="content">
+            <h3>Canvas</h3>
             <div>
-                <!-- <span>This is canvas panel</span> -->
+                <span>This is canvas panel</span>
                 <label id="diff-lbl">
                     <input type="checkbox" name="diff-box" value="diff" id="diff-box">diff
                 </label>
                 <div>
                 <div id="chart"></div>
             </div>
-        </div>
+        </div> -->
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>

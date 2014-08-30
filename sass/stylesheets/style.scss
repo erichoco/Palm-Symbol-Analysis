@@ -6,14 +6,14 @@ body {
 
 header {
     margin: 0 auto;
-    width: 80%;
     min-width: 600px;
     font-weight: bolder;
 }
 
 .container {
-    width: 80%;
-    min-width: 600px;
+    // width: 80%;
+    // min-width: 600px;
+    margin: 10px auto;
 }
 
 .content {
@@ -21,6 +21,24 @@ header {
         padding: 20px;
         border: 1px solid #cdcdcd;
         border-radius: 5px;
+    }
+    .step-div {
+        h4 > span {
+            color: #888888;
+            font-style: italic;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            li {
+                margin: 5px auto;
+                padding: 5px 10px;
+                background-color: #e6e6e6;
+                div {
+                    margin: 5px auto;
+                }
+            }
+        }
     }
 
     #diff-lbl {
