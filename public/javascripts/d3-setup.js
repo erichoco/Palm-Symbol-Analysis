@@ -77,7 +77,7 @@ svg.append("g")
 svg.selectAll("g.tick line")
     .style("stroke", "lightgrey");
 
-var selectShapeVert = false;
+var isSelectingVert = false;
 var selectedVertData = undefined;
 var vertDist = 0;
 
@@ -168,7 +168,7 @@ function drawSymbol(dataset) {
                 }
             })
             .on("click", function(d, i, j) {
-                if (selectShapeVert) {
+                if (isSelectingVert) {
                     var self = d3.select(this);
                         self.classed("clicked", true);
 
@@ -253,9 +253,10 @@ function drawDiff(dataset) {
 function clearVert() {
     var symbol = svg.selectAll('.symbol');
     symbol.selectAll('.shape-vert').remove();
-    symbol.selectAll('.clicked').transition()
-        .attr('r', 3.5)
-        .classed('clicked', false);
+    symbol.selectAll('.clicked')
+        .classed('clicked', false)
+        .transition()
+        .attr('r', 3.5);
     vertDist = 0;
 }
 

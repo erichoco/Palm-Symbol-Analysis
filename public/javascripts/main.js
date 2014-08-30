@@ -129,40 +129,30 @@ function initDOMElements() {
         }
     });
 
-    $('#diff-box').on('click', function(evt) {
-        if ($(this).is(':checked')) {
-            console.log('calculate diff...');
-            var sampleSize = 64;
-            calculateDiff(sampleSize);
-        }
-        else {
-            console.log('cleaning diff...');
-            clearDiff();
-        }
-    });
 
-    $('#shape-btn').on('click', function(evt) {
-        selectShapeVert = true;
+    /**** Step 3 ****/
+    $('.vert-btn').on('click', function(evt) {
+        isSelectingVert = true;
         var $this = $(this);
-        $('#shape-done-btn').attr('disabled', false);
+        $this.siblings('.vert-done-btn').attr('disabled', false);
         $this.attr('disabled', true);
-        $this.parent().children('span').html('');
+        $this.parent().children('p').html('');
         clearVert();
     });
 
-    $('#shape-done-btn').on('click', function(evt) {
-        selectShapeVert = false;
+    $('.vert-done-btn').on('click', function(evt) {
+        isSelectingVert = false;
         var $this = $(this);
-        $('#shape-btn').attr('disabled', false);
+        $this.siblings('.vert-btn').attr('disabled', false);
         $this.attr('disabled', true);
-        $this.parent().children('span')
-            .html('<strong>shape difference:</strong> ' + vertDist.toFixed(3) + 'mm');
+        $this.parent().children('p')
+            .html('<strong>vertices difference:</strong> ' + vertDist.toFixed(3) + 'mm');
     });
 
     $('#area-btn').on('click', function() {
         var polyArea = calArea();
         var $this = $(this);
-        $this.parent().children('span').html(function() {
+        $this.parent().children('p').html(function() {
             var str = '';
             for (var i = 0, len = symbols.length; i < len; i++) {
                 str +=
@@ -172,6 +162,8 @@ function initDOMElements() {
             return str;
         });
     });
+
+
 }
 
 function createOptions(selectId, optionLi) {
@@ -217,32 +209,4 @@ function removeData(filename) {
         return e.trial !== filename;
     });
     drawSymbol(symbols);
-}
-
-function calculateDiff(sampleSize) {
-    if (symbols.length < 2) {
-        console.info('symbol not enough...');
-        return;
-    }
-
-    var sample = [];
-    // var len0 = symbols[0],
-    //     len1 = symbols[1];
-    var interval0 = symbols[0].coord.length/sampleSize,
-        interval1 = symbols[1].coord.length/sampleSize;
-    var err = 0;
-
-    for (var i = 0; i < sampleSize; i++) {
-        var val = [symbols[0].coord[Math.round(interval0 * i)],
-                   symbols[1].coord[Math.round(interval1 * i)]];
-        sample.push(val);
-        err += Math.sqrt(Math.pow((val[0].x - val[1].x), 2) + Math.pow((val[0].y - val[1].y), 2));
-    }
-
-    console.log("Avg err =", err/sampleSize);
-    drawDiff(sample);
-}
-
-function clearDiff() {
-    drawDiff([]);
 }
