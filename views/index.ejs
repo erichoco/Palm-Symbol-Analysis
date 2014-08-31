@@ -44,17 +44,17 @@
                         <div class="step-div">
                             <h4>Step 2<span>&nbsp;&nbsp;Trim / Export</span></h4>
                             <div>
-                                <p>
-                                    <button type="button" class="trim-btn btn btn-default">Trim Head</button>
-                                    <button type="button" class="trim-btn btn btn-default">Trim Tail</button>
-                                    <button type="button" class="trim-btn btn btn-default">Trim Body</button>
-                                    <span></span>
+                                <button type="button" id="trim-head-btn" class="trim-btn btn btn-default">Trim Head</button>
+                                <button type="button" id="trim-tail-btn" class="trim-btn btn btn-default">Trim Tail</button>
+                                <button type="button" id="trim-body-btn" class="trim-btn btn btn-default">Trim Body</button>
+                                <!-- <button type="button" id="trim-reset-btn" class="btn btn-danger" disabled="disabled">Reset</button> -->
+                                <p></p>
+
+                                <!-- <p>
+                                    <button type="button" id="trim-done-btn" class="btn btn-success" disabled="disabled">Done</button>
+                                    <button type="button" id="trim-reset-btn" class="btn btn-danger" disabled="disabled">Reset</button>
                                 </p>
-                                <p>
-                                    <button type="button" class="btn btn-success">Done</button>
-                                    <button type="button" class="btn btn-danger">Reset</button>
-                                    <button type="button" class="btn btn-info">Export CSV</button>
-                                </p>
+                                <button type="button" class="btn btn-info">Export CSV</button> -->
                             </div>
                         </div>
                         <hr>
@@ -94,27 +94,16 @@
                     <div class="col-md-8">
                         <div>
                             <!-- <span>This is canvas panel</span> -->
-                            <label id="diff-lbl">
+                            <!-- <label id="diff-lbl">
                                 <input type="checkbox" name="diff-box" value="diff" id="diff-box" />diff
-                            </label>
-                            <div>
+                            </label> -->
+                            <button type="button" id="export-btn" class="btn btn-default">Export CSV</button>
                             <div id="chart"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <div class="content">
-            <h3>Canvas</h3>
-            <div>
-                <span>This is canvas panel</span>
-                <label id="diff-lbl">
-                    <input type="checkbox" name="diff-box" value="diff" id="diff-box">diff
-                </label>
-                <div>
-                <div id="chart"></div>
-            </div>
-        </div> -->
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->

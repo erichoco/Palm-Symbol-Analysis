@@ -1,49 +1,9 @@
 var symbols = [];
 var filepath = "../data/";
+var trimmedSymbols = [];
 
 $(function() {
     initDOMElements();
-
-    // var filename0 = "shape/0-0.csv";
-    // var filename1 = "shape/0-1.csv";
-
-    // loadNewData(filepath, filename0);
-    // loadNewData(filepath, "letter/1-0.csv");
-    for (var i = 0; i < 2; i++) {
-        // loadNewData(filepath, "letter/" + i + "-0.csv");
-        // loadNewData(filepath, "shape/user3-4-" + i + ".csv");
-        // loadNewData(filepath, "stroke/user3-" + i + "-0.csv");
-        // loadNewData(filepath, "tri-" + i + ".csv")
-        loadNewData(filepath, '0813/temp3/3-'+i+'.csv');
-    };
-
-    function loadNewData(filepath, filename) {
-        var newData = {
-            "trial": filename,
-        };
-        d3.csv(filepath + filename, function(error, data) {
-            if (0 === data.length) {
-                return;
-            }
-            newData["coord"] = [];
-            data.forEach(function(d) {
-                // change string (from CSV) into number format
-                d.x = +d.x;
-                d.y = +d.y;
-                if (d.x > scaleMax) scaleMax = d.x;
-                if (d.x < scaleMin) scaleMin = d.x;
-                if (d.y > scaleMax) scaleMax = d.y;
-                if (d.y < scaleMin) scaleMin = d.y;
-                newData.coord.push({
-                    "x": d.x,
-                    "y": d.y
-                });
-            });
-            symbols.push(newData);
-            drawSymbol(symbols);
-        });
-    };
-
 });
 
 function initDOMElements() {
@@ -129,6 +89,52 @@ function initDOMElements() {
         }
     });
 
+    /**** Step 2 ****/
+    $('.trim-btn').on('click', function(evt) {
+        var hint = 'QQ';
+        switch(evt.target.id) {
+            case "trim-head-btn":
+                isTrimmingHead = !isTrimmingHead;
+                hint = 'Select the starting point of the symbol.';
+                break;
+            case "trim-tail-btn":
+                isTrimmingTail = !isTrimmingTail;
+                hint = 'Select the ending point of the symbol.';
+                break;
+            case "trim-body-btn":
+                isTrimmingBody = !isTrimmingBody;
+                hint = 'Select two points that indicate the segment to trim.';
+                break;
+        }
+
+        var $this = $(this);
+        $this.toggleClass('btn-primary').toggleClass('btn-default');
+
+        if ($this.hasClass('btn-primary')) {
+            $this.siblings('.trim-btn').attr('disabled', true);
+            $this.siblings('#trim-reset-btn').attr('disabled', false);
+            $this.siblings('p').html(hint);
+        }
+        else {
+            $this.siblings('.trim-btn').attr('disabled', false);
+            $this.siblings('#trim-reset-btn').attr('disabled', true);
+            $this.siblings('p').html('');
+
+            for (var i = 0, len = symbols.length; i < len; i++) {
+                for (var j = 0, len_t = trimmedSymbols.length; j < len_t; j++) {
+                    if (trimmedSymbols[j].trial === symbols[i].trial) {
+                        symbols[i] = trimmedSymbols[j];
+                    }
+                }
+            }
+            trimmedSymbols = [];
+        }
+
+    });
+    $('#trim-reset-btn').on('click', function(evt) {
+        trimmedSymbols = [];
+        drawSymbol(symbols);
+    });
 
     /**** Step 3 ****/
     $('.vert-btn').on('click', function(evt) {
@@ -163,7 +169,23 @@ function initDOMElements() {
         });
     });
 
+    $('#export-btn').on('click', function() {
+        for (var i = 0, len = symbols.length; i < len; i++) {
+            var csvData = [];
+            csvData.push('x,y');
+            for (var j = 0, len_c = symbols[i].coord.length; j < len_c; j++) {
+                csvData.push(
+                    [symbols[i].coord[j].x, symbols[i].coord[j].y].join(','));
+            }
+            var csvContent = 'data:text/csv;charset=utf-8,' + csvData.join('\n');
 
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", symbols[i].trial.replace(/\//g, '_'));
+            link.click();
+        }
+    });
 }
 
 function createOptions(selectId, optionLi) {
@@ -178,6 +200,14 @@ function createOptions(selectId, optionLi) {
 }
 
 function loadNewData(filename) {
+    var exist = $.grep(symbols, function(e) {
+        return e.trail === filename;
+    });
+    if (0 !== exist.length) {
+        console.log('symbol already loaded...');
+        return;
+    }
+
     var newData = {
         "trial": filename,
     };

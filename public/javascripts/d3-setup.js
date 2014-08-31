@@ -77,6 +77,12 @@ svg.append("g")
 svg.selectAll("g.tick line")
     .style("stroke", "lightgrey");
 
+
+var isTrimmingHead = false;
+var isTrimmingTail = false;
+var isTrimmingBody = false;
+var trimBodyFirstIdx = undefined;
+
 var isSelectingVert = false;
 var selectedVertData = undefined;
 var vertDist = 0;
@@ -88,8 +94,6 @@ function drawSymbol(dataset) {
     // yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
     xScale.domain([scaleMin-10, scaleMax+10]);
     yScale.domain([scaleMin-10, scaleMax+10]);
-    // xScale.domain([0, 100]);
-    // yScale.domain([0, 100]);
 
     // x-axis
     svg.select(".x.axis").transition().call(xAxis);
@@ -215,6 +219,56 @@ function drawSymbol(dataset) {
                     else {
                         selectedVertData = d;
                     }
+                }
+                else if (isTrimmingHead || isTrimmingTail || isTrimmingBody) {
+                    var self = d3.select(this);
+                    var parent = self[0][0].parentNode;
+                    // var set = parent.__data__;
+                    var set = dataset[j].coord.slice();
+                    var setLen = set.length;
+                    if (isTrimmingHead) {
+                        set = set.slice(i, setLen);
+                    }
+                    else if (isTrimmingTail) {
+                        set = set.slice(0, i + 1);
+                    }
+                    else if (isTrimmingBody) {
+                        if (trimBodyFirstIdx) {
+                            var dist = i - trimBodyFirstIdx;
+                            if (dist > 0) {
+                                set.splice(trimBodyFirstIdx, dist);
+                            }
+                            else {
+                                set.splice(i, -dist);
+                            }
+                            trimBodyFirstIdx = undefined;
+                            d3.select(parent)
+                                .selectAll('.clicked')
+                                .classed('clicked', false)
+                                .attr('r', 3.5);
+                        }
+                        else {
+                            trimBodyFirstIdx = i;
+                            self.classed('clicked', true);
+                        }
+                    }
+
+                    var trimmed = $.grep(trimmedSymbols, function(e) {
+                        if (e.trial === dataset[j].trial) {
+                            e.coord = set;
+                            return true;
+                        }
+                        return false;
+                    });
+                    if (0 === trimmed.length) {
+                        trimmedSymbols.push({
+                            trial: dataset[j].trial,
+                            coord: set
+                        });
+                    }
+                    dataset[j].coord = set;
+
+                    drawSymbol(dataset);
                 }
             });
 
