@@ -230,7 +230,7 @@ function drawSymbol(dataset) {
                         set = set.slice(i, setLen);
                     }
                     else if (isTrimmingTail) {
-                        set = set.slice(0, i + 1);
+                        set = set.slice(0, i);
                     }
                     else if (isTrimmingBody) {
                         if (trimBodyFirstIdx) {
