@@ -252,6 +252,7 @@ function drawSymbol(dataset) {
                             self.classed('clicked', true);
                         }
                     }
+                    console.log(i);
 
                     var trimmed = $.grep(trimmedSymbols, function(e) {
                         if (e.trial === dataset[j].trial) {

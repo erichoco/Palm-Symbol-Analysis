@@ -238,5 +238,8 @@ function removeData(filename) {
     symbols = $.grep(symbols, function(e) {
         return e.trial !== filename;
     });
+    trimmedSymbols = $.grep(trimmedSymbols, function(e) {
+        return e.trial !== filename;
+    });
     drawSymbol(symbols);
 }
