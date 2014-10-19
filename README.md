@@ -1,4 +1,4 @@
-Please find our website on [PalmGesture](http://palmgesture.herokuapp.com/)
+Please find our website on [PalmGesture](http://palmgesture.herokuapp.com/).
 
 ###### [Update-08-31]
 
