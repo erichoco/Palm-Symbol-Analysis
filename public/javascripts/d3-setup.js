@@ -278,7 +278,12 @@ function drawSymbol(dataset) {
 
     symbol.each(function(d, i) {
         d3.select(this).selectAll(".dot")
-            .style("fill", function() { return color(i);});
+            .style("fill", function(dot_d, dot_i) {
+                if (0 === dot_i) {
+                    return "#ff0000";
+                }
+                return color(i);
+            });
     });
 }
 
